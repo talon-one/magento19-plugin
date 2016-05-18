@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+    <checkout_cart_index>
+        <!--<reference name="checkout.cart.form.before">
+            <block type="core/template" name="talonone.coupon" template="talonone/coupon.phtml"/>
+        </reference>-->
+        <reference name="checkout.cart.extra">
+            <block type="talonone_talonone/coupon" name="talonone.coupon" as="talonone.coupon" template="talonone/coupon.phtml"/>
+            <remove name="checkout.cart.coupon"/>
+        </reference>
+        <!--<reference name="checkout.cart.methods">
+            <block type="core/template" name="talonone.coupon" template="talonone/coupon.phtml"/>
+        </reference>-->
+    </checkout_cart_index>
+
+    <checkout_onepage_index>
+        <reference name="checkout.onepage.payment.additional" >
+            <block type="talonone_talonone/coupon" name="talonone.coupon" as="talonone.coupon" output="toHtml" template="talonone/coupon.phtml"/>
+        </reference>
+    </checkout_onepage_index>
+
+    <checkout_onepage_progress_billing>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>talonone/checkout/onepage/progress/billing.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_progress_billing>
+
+    <checkout_multishipping_billing>
+        <reference name="content">
+            <block type="talonone_talonone/coupon" name="talonone.coupon" as="talonone.coupon" output="toHtml" template="talonone/coupon.phtml"/>
+        </reference>
+    </checkout_multishipping_billing>
+
+
+</layout>
