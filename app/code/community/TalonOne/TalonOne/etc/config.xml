@@ -9,6 +9,11 @@
         <settings>
             <service_url>https://valuelogic-api.talon.one/</service_url>
         </settings>
+        <talonone>
+            <settings>
+                <talonone_show_coupon_input>1</talonone_show_coupon_input>
+            </settings>
+        </talonone>
     </default>
     <global>
         <models>

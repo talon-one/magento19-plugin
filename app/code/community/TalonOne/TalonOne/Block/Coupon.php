@@ -3,6 +3,10 @@
 class TalonOne_TalonOne_Block_Coupon extends Mage_Core_Block_Template
 {
 
+    public function showCouponInput(){
+        return Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOW_COUPON_INPUT);
+    }
+
     public function getCouponCode()
     {
         $session = Mage::getSingleton('checkout/session');

@@ -1,32 +1,46 @@
-<form id="talonone-discount-coupon-form" action="<?php echo $this->getFormActionUrl() ?>" method="post">
-    <div class="discount">
-        <h5><?php echo $this->__('Talon.One Discount Codes') ?></h5>
-        <div class="discount-form">
-            <input type="hidden" name="remove" id="remove-coupone" value="0" />
-            <div class="input-box">
-                <input class="input-text" id="coupon_code" name="coupon_code" value="<?php echo $this->escapeHtml($this->getCouponCode()) ?>" />
-            </div>
-            <div class="buttons-set">
-                <button type="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply Coupon')) ?>" class="button" onclick="talonOneDiscountForm.submit(false)" value="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply Coupon')) ?>"><span><span><?php echo $this->__('Apply Coupon') ?></span></span></button>
-                <?php if(strlen($this->getCouponCode())): ?>
-                    &nbsp; <button type="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Cancel Coupon')) ?>" class="button" onclick="talonOneDiscountForm.submit(true)" value="<?php echo Mage::helper('core')->quoteEscape($this->__('Cancel Coupon')) ?>"><span><span><?php echo $this->__('Cancel Coupon') ?></span></span></button>
-                <?php endif;?>
+<?php if ($this->showCouponInput()) : ?>
+    <form id="talonone-discount-coupon-form" action="<?php echo $this->getFormActionUrl() ?>" method="post">
+        <div class="discount">
+            <h5><?php echo $this->__('Talon.One Discount Codes') ?></h5>
+
+            <div class="discount-form">
+                <input type="hidden" name="remove" id="remove-coupone" value="0"/>
+
+                <div class="input-box">
+                    <input class="input-text" id="coupon_code" name="coupon_code"
+                           value="<?php echo $this->escapeHtml($this->getCouponCode()) ?>"/>
+                </div>
+                <div class="buttons-set">
+                    <button type="button"
+                            title="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply Coupon')) ?>"
+                            class="button" onclick="talonOneDiscountForm.submit(false)"
+                            value="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply Coupon')) ?>">
+                        <span><span><?php echo $this->__('Apply Coupon') ?></span></span></button>
+                    <?php if (strlen($this->getCouponCode())): ?>
+                        &nbsp;
+                        <button type="button"
+                                title="<?php echo Mage::helper('core')->quoteEscape($this->__('Cancel Coupon')) ?>"
+                                class="button" onclick="talonOneDiscountForm.submit(true)"
+                                value="<?php echo Mage::helper('core')->quoteEscape($this->__('Cancel Coupon')) ?>">
+                            <span><span><?php echo $this->__('Cancel Coupon') ?></span></span></button>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
-    </div>
-</form>
-<script type="text/javascript">
-//<![CDATA[
-var talonOneDiscountForm = new VarienForm('talonone-discount-coupon-form');
-talonOneDiscountForm.submit = function (isRemove) {
-    if (isRemove) {
-        $('coupon_code').removeClassName('required-entry');
-        $('remove-coupone').value = "1";
-    } else {
-        $('coupon_code').addClassName('required-entry');
-        $('remove-coupone').value = "0";
-    }
-    return VarienForm.prototype.submit.bind(talonOneDiscountForm)();
-}
-//]]>
-</script>
+    </form>
+    <script type="text/javascript">
+        //<![CDATA[
+        var talonOneDiscountForm = new VarienForm('talonone-discount-coupon-form');
+        talonOneDiscountForm.submit = function (isRemove) {
+            if (isRemove) {
+                $('coupon_code').removeClassName('required-entry');
+                $('remove-coupone').value = "1";
+            } else {
+                $('coupon_code').addClassName('required-entry');
+                $('remove-coupone').value = "0";
+            }
+            return VarienForm.prototype.submit.bind(talonOneDiscountForm)();
+        }
+        //]]>
+    </script>
+<?php endif; ?>
