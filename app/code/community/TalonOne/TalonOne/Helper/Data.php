@@ -83,19 +83,23 @@ class TalonOne_TalonOne_Helper_Data extends Mage_Core_Helper_Abstract
 
         foreach ($quote->getAllVisibleItems() as $item) {
 
+            $product = Mage::getModel('catalog/product')->load($item->getProductId());
             $cartItem = array(
-                'name' => $item->getProduct()->getName(),
-                'sku' => $item->getProduct()->getSku(),
+                'name' => $product->getName(),
+                'sku' => $product->getSku(),
                 'quantity' => $item->getQty(),
-                //'currency' => '',
-                'price' => (float) $item->getProduct()->getPrice(),
-                'weight' => (float) $item->getProduct()->getWeight(),
-                //'height' => '',
-                //'lenght' => ''
+                'currency' => Mage::app()->getStore()->getCurrentCurrencyCode(),
+                'price' => (float) $product->getPrice(),
+                'weight' => (float) $product->getWeight(),
+                'height' => (float) $product->getHeight(),
+                'width' => (float) $product->getWidth(),
+                'length' => (float) $product->getLength(),
             );
 
+            Mage::log('LENGTH: '.$product->getData('length'). ' '.$product->getLength());
+
             if ($item->getProduct()->getCategory()) {
-                $cartItem['category'] = $item->getProduct()->getCategory()->getName();
+                $cartItem['category'] = $product->getCategory()->getName();
             }
 
             array_push($cartItems, $cartItem);

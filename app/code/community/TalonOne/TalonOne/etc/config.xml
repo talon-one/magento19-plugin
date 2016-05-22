@@ -60,6 +60,14 @@
             </talonone>
         </routers>
         <events>
+            <customer_login>
+                <observers>
+                    <customer_login>
+                        <class>talonone_talonone/observer</class>
+                        <method>hookToCustomerLoginAfter</method>
+                    </customer_login>
+                </observers>
+            </customer_login>
             <controller_action_postdispatch>
                 <observers>
                     <controller_action_after>

@@ -3,6 +3,15 @@
 class TalonOne_TalonOne_Model_Observer
 {
 
+    public function hookToCustomerLoginAfter($observer)
+    {
+        $request = $observer->getEvent()->getRequest()->getParams();
+
+        $helper = Mage::helper('talonone_talonone');
+        $helper->createOrUpdateCustomerProfile();
+
+    }
+
     public function hookToControllerActionPostDispatch($observer)
     {
         $fullActionName = $observer->getEvent()->getControllerAction()->getFullActionName();
