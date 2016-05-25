@@ -47,8 +47,9 @@ class TalonOne_TalonOne_Helper_Api extends Mage_Core_Helper_Abstract
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 
         $response = curl_exec($curl);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-        Mage::log('RESPONSE: '.$response);
+        Mage::log('RESPONSE: '.$httpcode.' '.$response);
 
         curl_close($curl);
 

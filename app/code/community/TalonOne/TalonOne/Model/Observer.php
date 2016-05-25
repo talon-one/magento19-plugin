@@ -7,7 +7,6 @@ class TalonOne_TalonOne_Model_Observer
     {
         $helper = Mage::helper('talonone_talonone');
         $helper->createOrUpdateCustomerProfile();
-
     }
 
     public function hookToControllerActionPostDispatch($observer)
@@ -33,18 +32,21 @@ class TalonOne_TalonOne_Model_Observer
     public function hookToAddToCartAfter($observer)
     {
         $request = $observer->getEvent()->getRequest()->getParams();
-
         $helper = Mage::helper('talonone_talonone');
         $helper->updateCustomerSession();
-
     }
 
     public function hookToUpdateCartAfter($observer)
     {
         $request = $observer->getEvent()->getRequest()->getParams();
-
         $helper = Mage::helper('talonone_talonone');
         $helper->updateCustomerSession();
+    }
+
+    public function hookToSalesQuoteCollectTotalsAfter($observer)
+    {
+        $helper = Mage::helper('talonone_talonone');
+        $helper->injectEffects($observer->getEvent()->getQuote());
     }
 
 }

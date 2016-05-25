@@ -44,15 +44,6 @@
                 <class>TalonOne_TalonOne_Helper</class>
             </talonone_talonone>
         </helpers>
-        <sales>
-            <quote>
-                <totals>
-                    <talonone_talonone>
-                        <class>TalonOne_TalonOne_Model_Sales_Quote_Address_Total_Coupon</class>
-                    </talonone_talonone>
-                </totals>
-            </quote>
-        </sales>
     </global>
     <frontend>
         <routers>
@@ -97,6 +88,14 @@
                     </update_cart_after>
                 </observers>
             </update_cart_after>
+            <sales_quote_collect_totals_after>
+                <observers>
+                    <sales_quote_collect_totals_after>
+                        <class>talonone_talonone/observer</class>
+                        <method>hookToSalesQuoteCollectTotalsAfter</method>
+                    </sales_quote_collect_totals_after>
+                </observers>
+            </sales_quote_collect_totals_after>
         </events>
         <layout>
             <updates>

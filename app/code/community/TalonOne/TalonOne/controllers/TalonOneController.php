@@ -51,6 +51,7 @@ class TalonOne_TalonOne_TalonOneController extends Mage_Core_Controller_Front_Ac
 
         if ($this->getRequest()->getParam('remove')) {
             Mage::getSingleton('checkout/session')->unsetData('talonone_coupon_code');
+            Mage::getSingleton('checkout/session')->unsTalonOneEffects();
         } else {
             $coupon_code = $this->getRequest()->getParam('coupon_code');
             $session = Mage::getSingleton('checkout/session');
