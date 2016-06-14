@@ -1,13 +1,11 @@
 <?php if ($this->showCouponInput()) : ?>
-    <form id="talonone-discount-coupon-form" action="<?php echo $this->getFormActionUrl() ?>" method="post">
+    <form id="talonone-discount-coupon-form" action="<?php echo $this->getFormActionUrl() ?>" method="post" autocomplete="off">
         <div class="discount">
             <h5><?php echo $this->__('Talon.One Discount Codes') ?></h5>
-
             <div class="discount-form">
                 <input type="hidden" name="remove" id="remove-coupone" value="0"/>
-
                 <div class="input-box">
-                    <input class="input-text" id="coupon_code" name="coupon_code"
+                    <input class="input-text" id="coupon_code" name="coupon_code" maxlength="20"
                            value="<?php echo $this->escapeHtml($this->getCouponCode()) ?>"/>
                 </div>
                 <div class="buttons-set">
@@ -16,14 +14,15 @@
                             class="button" onclick="talonOneDiscountForm.submit(false)"
                             value="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply Coupon')) ?>">
                         <span><span><?php echo $this->__('Apply Coupon') ?></span></span></button>
-                    <?php if (strlen($this->getCouponCode())): ?>
+                    <?php if($this->isValidCouponCode()): ?>
                         &nbsp;
                         <button type="button"
-                                title="<?php echo Mage::helper('core')->quoteEscape($this->__('Cancel Coupon')) ?>"
+                                title="<?php echo Mage::helper('core')->quoteEscape($this->__('Remove Coupon')) ?>"
                                 class="button" onclick="talonOneDiscountForm.submit(true)"
-                                value="<?php echo Mage::helper('core')->quoteEscape($this->__('Cancel Coupon')) ?>">
-                            <span><span><?php echo $this->__('Cancel Coupon') ?></span></span></button>
+                                value="<?php echo Mage::helper('core')->quoteEscape($this->__('Remove Coupon')) ?>">
+                            <span><span><?php echo $this->__('Remove Coupon') ?></span></span></button>
                     <?php endif; ?>
+                    <div style="color: #ff0000;float: left;"><?php echo $this->getLastError(); ?></div>
                 </div>
             </div>
         </div>
@@ -40,7 +39,7 @@
                 $('remove-coupone').value = "0";
             }
             return VarienForm.prototype.submit.bind(talonOneDiscountForm)();
-        }
+        };
         //]]>
     </script>
 <?php endif; ?>

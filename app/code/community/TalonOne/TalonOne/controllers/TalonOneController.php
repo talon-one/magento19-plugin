@@ -2,7 +2,6 @@
 
 class TalonOne_TalonOne_TalonOneController extends Mage_Core_Controller_Front_Action
 {
-
     public function indexAction()
     {
         $this->loadLayout();
@@ -33,34 +32,64 @@ class TalonOne_TalonOne_TalonOneController extends Mage_Core_Controller_Front_Ac
      */
     public function checkAction()
     {
-
-        $shop_id = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOP_ID);
-        $secret_key = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SECRET_KEY);
-
-        $status = (empty($shop_id) || empty($secret_key)) ? 'BAD' : 'OK';
-        $version = Mage::getConfig()->getModuleConfig('TalonOne_TalonOne')->version->asArray();
-
-        $data = array('status'=> $status,'version' => $version);
-
+        $magentoVersion = Mage::getVersion();
+        $pluginVersion = Mage::getConfig()->getModuleConfig('TalonOne_TalonOne')->version->asArray();
+        $inputShowed = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOW_COUPON_INPUT);
+        $shopId = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOP_ID);
+        $secretKey = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SECRET_KEY);
+        $response = Mage::helper('talonone_talonone/api')->post('events', array(
+            'type' => 'check_plugin',
+            'value' => array(
+                'pluginVersion' => $pluginVersion,
+                'magentoVersion' => $magentoVersion,
+                'inputShowed' => $inputShowed
+            ),
+            'sessionId' => '0'
+        ));
+        $status = (empty($shopId) || empty($secretKey) || $response['status'] != '201') ? 'NOT OK' : 'OK';
+        $data = array(
+            'status' => $status,
+            'pluginVersion' => $pluginVersion,
+            'magentoVersion' => $magentoVersion,
+            'inputShowed' => (bool)$inputShowed
+        );
         $this->getResponse()->setHeader('Content-type', 'application/json');
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($data));
     }
 
-
-    private function checkCoupon(){
-
-        if ($this->getRequest()->getParam('remove')) {
-            Mage::getSingleton('checkout/session')->unsetData('talonone_coupon_code');
-            Mage::getSingleton('checkout/session')->unsTalonOneEffects();
-        } else {
-            $coupon_code = $this->getRequest()->getParam('coupon_code');
-            $session = Mage::getSingleton('checkout/session');
-            $session->setData('talonone_coupon_code', $coupon_code);
+    protected function checkCoupon()
+    {
+        if (!Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOW_COUPON_INPUT)) {
+            $this->_redirect('checkout/cart');
+            return;
         }
 
         $helper = Mage::helper('talonone_talonone');
-        $helper->updateCustomerSession();
-
-        $this->_redirect('checkout/cart');
+        $session = Mage::getSingleton('checkout/session');
+        $newCouponCode = htmlspecialchars($this->getRequest()->getParam('coupon_code'));
+        $remove = htmlspecialchars($this->getRequest()->getParam('remove'));
+        $ajax = htmlspecialchars($this->getRequest()->getParam('ajax'));
+        if ($remove == 1 || empty($newCouponCode)) {
+            $helper->getEffectCollection()->rollBackEffects();
+        } else {
+            if (!empty($newCouponCode)) {
+                $coupon_code = $session->getTalonOneCouponCode();
+                if (!empty($coupon_code)) {
+                    $helper->getEffectCollection()->rollBackEffects();
+                }
+                $session->setTalonOneCouponCode($newCouponCode);
+            }
+        }
+        Mage::helper('talonone_talonone/customerSession')->updateCustomerSession();
+        if (!(($remove == 1) || $helper->isValidCouponCode())) {
+            $helper->getEffectCollection()->rollBackEffects();
+            $helper->setLastError('Invalid coupon code');
+        }
+        if ($ajax && $ajax == 1) {
+            $this->getResponse()->setHeader('Content-type', 'application/json');
+            $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array('coupon_valid' => $helper->isValidCouponCode())));
+        } else {
+            $this->_redirect('checkout/cart');
+        }
     }
 }

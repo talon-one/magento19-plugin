@@ -2,20 +2,65 @@
 
 class TalonOne_TalonOne_Model_Observer
 {
-
-    public function hookToCustomerLoginAfter($observer)
+    public function hookToCustomerRegisterSuccess()
     {
-        $helper = Mage::helper('talonone_talonone');
-        $helper->createOrUpdateCustomerProfile();
+        $this->createOrUpdateCustomerProfile();
     }
 
-    public function hookToControllerActionPostDispatch($observer)
+    public function hookToCustomerLoginAfter()
+    {
+        $this->createOrUpdateCustomerProfile();
+    }
+
+    public function hookToCustomerSaveAfter()
+    {
+        $this->createOrUpdateCustomerProfile();
+    }
+
+    public function hookToCustomerAddressSaveAfter()
+    {
+        $this->createOrUpdateCustomerProfile();
+    }
+
+    public function hookToAddToCartAfter()
+    {
+        $this->updateCustomerSession();
+    }
+
+    public function hookToUpdateCartAfter()
+    {
+        $this->updateCustomerSession();
+    }
+
+    public function hookToSavePaymentAfter()
+    {
+        $this->updateCustomerSession();
+    }
+
+    public function hookToSalesQuoteCollectTotalsAfter(Varien_Event_Observer $observer)
+    {
+        Mage::helper('talonone_talonone/cart')->addFreeItemsToCart($observer->getEvent()->getQuote());
+    }
+
+    public function hookToSalesOrderPlaceAfter()
+    {
+        Mage::helper('talonone_talonone/customerSession')->closeCustomerSession();
+    }
+
+    public function hookToSalesQuoteSaveBefore(Varien_Event_Observer $observer)
+    {
+        Mage::helper('talonone_talonone')->getEffectCollection()->checkFreeItemCount($observer->getEvent()->getQuote());
+    }
+
+    public function hookToSalesQuoteRemoveItem(Varien_Event_Observer $observer)
+    {
+        Mage::helper('talonone_talonone')->getEffectCollection()->removeFreeItemBySku($observer->getQuoteItem()->getSku());
+    }
+
+    public function hookToControllerActionPostDispatch(Varien_Event_Observer $observer)
     {
         $fullActionName = $observer->getEvent()->getControllerAction()->getFullActionName();
         $request = $observer->getControllerAction()->getRequest();
-
-        $values = array('url' => $request->getRequestUri());
-
         switch ($fullActionName) {
             case 'checkout_cart_add':
                 Mage::dispatchEvent('add_to_cart_after', array('request' => $request));
@@ -23,30 +68,20 @@ class TalonOne_TalonOne_Model_Observer
             case 'checkout_cart_updatePost':
                 Mage::dispatchEvent('update_cart_after', array('request' => $request));
                 break;
+            case 'checkout_onepage_savePayment':
+                Mage::dispatchEvent('save_payment_after', array('request' => $request));
+                break;
         }
-
-        $helper = Mage::helper('talonone_talonone');
-        $helper->postEvent($fullActionName, $values);
+        Mage::helper('talonone_talonone/customerEvent')->postEvent($fullActionName, array('url' => $request->getRequestUri()));
     }
 
-    public function hookToAddToCartAfter($observer)
+    protected function createOrUpdateCustomerProfile()
     {
-        $request = $observer->getEvent()->getRequest()->getParams();
-        $helper = Mage::helper('talonone_talonone');
-        $helper->updateCustomerSession();
+        Mage::helper('talonone_talonone/customerProfile')->createOrUpdateCustomerProfile();
     }
 
-    public function hookToUpdateCartAfter($observer)
+    protected function updateCustomerSession()
     {
-        $request = $observer->getEvent()->getRequest()->getParams();
-        $helper = Mage::helper('talonone_talonone');
-        $helper->updateCustomerSession();
+        Mage::helper('talonone_talonone/customerSession')->updateCustomerSession();
     }
-
-    public function hookToSalesQuoteCollectTotalsAfter($observer)
-    {
-        $helper = Mage::helper('talonone_talonone');
-        $helper->injectEffects($observer->getEvent()->getQuote());
-    }
-
 }

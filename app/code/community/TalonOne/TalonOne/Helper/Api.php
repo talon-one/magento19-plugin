@@ -3,59 +3,6 @@
 class TalonOne_TalonOne_Helper_Api extends Mage_Core_Helper_Abstract
 {
 
-    private function call($method, $url, $data = array())
-    {
-        $shop_id = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOP_ID);
-        $secret_key = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SECRET_KEY);
-        $service_url = Mage::getStoreConfig('settings/service_url');
-        $url = $service_url . $url;
-        $data_json = json_encode($data);
-
-        Mage::log($method.' '.$url);
-        Mage::log('DATA JSON: '.$data_json);
-
-        $curl = curl_init();
-
-        switch ($method) {
-            case "GET":
-                curl_setopt($curl, CURLOPT_HTTPGET, true);
-                break;
-            case "POST":
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data_json);
-                break;
-            case "PUT":
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data_json);
-                break;
-            case "DELETE":
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
-                break;
-        }
-
-        $key = hex2bin($secret_key);
-        $signature = hash_hmac('md5', $data_json, $key);
-
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Content-Signature: signer=' . $shop_id . '; signature=' . $signature,
-            'Content-Length: ' . strlen($data_json)
-        ));
-
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-
-        $response = curl_exec($curl);
-        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-        Mage::log('RESPONSE: '.$httpcode.' '.$response);
-
-        curl_close($curl);
-
-        return $response;
-    }
-
     public function get($url, $data = array())
     {
         return $this->call('GET', $url, $data);
@@ -75,5 +22,41 @@ class TalonOne_TalonOne_Helper_Api extends Mage_Core_Helper_Abstract
     {
         return $this->call('DELETE', $url, $data);
     }
-    
+
+    public function checkResponse($response)
+    {
+        if (array_key_exists('event', $response) && array_key_exists('effects', $response['event'])) {
+            $newEffectCollection = Mage::getModel('talonone_talonone/effect_collection');
+            $newEffectCollection->bindEffectsFromArray($response['event']['effects']);
+            Mage::helper('talonone_talonone')->getEffectCollection()->updateEffects($newEffectCollection);
+        }
+    }
+
+    protected function call($method, $url, $data = array())
+    {
+        $shopId = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOP_ID);
+        $secretKey = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SECRET_KEY);
+        $serviceUrl = Mage::getStoreConfig('settings/service_url');
+        $url = $serviceUrl . $url;
+        $dataJson = json_encode($data);
+        $signature = hash_hmac('md5', $dataJson, hex2bin($secretKey));
+        $headers = 'Content-Signature: signer=' . $shopId . '; signature=' . $signature;
+        $client = new Zend_Http_Client();
+        try {
+            $client->setUri($url)
+                ->setMethod($method)
+                ->setHeaders($headers)
+                ->setRawData($dataJson)
+                ->setEncType('application/json');
+            $response = $client->request();
+        } catch (Exception $e) {
+            Mage::logException($e);
+            $response = new Zend_Http_Response(500, array(), '');
+        }
+        return array(
+            'status' => $response->getStatus(),
+            'message' => $response->getMessage(),
+            'body' => json_decode($response->getBody(), true)
+        );
+    }
 }

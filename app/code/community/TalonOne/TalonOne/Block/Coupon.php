@@ -3,16 +3,24 @@
 class TalonOne_TalonOne_Block_Coupon extends Mage_Core_Block_Template
 {
 
-    public function showCouponInput(){
+    public function showCouponInput()
+    {
         return Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOW_COUPON_INPUT);
+    }
+
+    public function isValidCouponCode()
+    {
+        return Mage::helper('talonone_talonone')->isValidCouponCode();
     }
 
     public function getCouponCode()
     {
-        $session = Mage::getSingleton('checkout/session');
-        $coupon_code = $session->getData('talonone_coupon_code');
+        return Mage::helper('talonone_talonone')->getCouponCode();
+    }
 
-        return $coupon_code;
+    public function getLastError()
+    {
+        return Mage::helper('talonone_talonone')->getLastError();
     }
 
     public function getFormActionUrl()

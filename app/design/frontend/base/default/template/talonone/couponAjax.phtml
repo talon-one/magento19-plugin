@@ -1,0 +1,97 @@
+<?php if ($this->showCouponInput()) : ?>
+    <form id="talonone-discount-coupon-form" autocomplete="off">
+        <div class="discount">
+            <h5><?php echo $this->__('Talon.One Discount Codes') ?></h5>
+
+            <div class="discount-form">
+                <input type="hidden" name="remove" id="remove-coupone" value="0"/>
+                <input type="hidden" name="ajax" id="ajax" value="1"/>
+
+                <div class="input-box">
+                    <input class="input-text" id="coupon-code" name="coupon_code" maxlength="20"
+                           value="<?php echo $this->escapeHtml($this->getCouponCode()) ?>"/>
+                    <span id="formLoader" style="display:none;">&nbsp;</span>
+                    <span class="please-wait" id="coupon-code-please-wait" style="display:none;">
+                        <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Please wait...')) ?>" title="<?php echo $this->__('Please wait...') ?>" class="v-middle" /> <?php echo $this->__('Please wait...') ?>
+                    </span>
+                </div>
+                <div class="buttons-set">
+                    <button type="button"
+                            id="apply-button"
+                            title="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply Coupon')) ?>"
+                            class="button" onclick="talonOneDiscountForm.submit(false)"
+                            value="<?php echo Mage::helper('core')->quoteEscape($this->__('Apply Coupon')) ?>"
+                            style="<?php if($this->getCouponCode()) echo 'display:none' ?>">
+                        <span><span><?php echo $this->__('Apply Coupon') ?></span></span></button>
+                        &nbsp;
+                        <button type="button"
+                                id="remove-button"
+                                title="<?php echo Mage::helper('core')->quoteEscape($this->__('Remove Coupon')) ?>"
+                                class="button" onclick="talonOneDiscountForm.submit(true)"
+                                value="<?php echo Mage::helper('core')->quoteEscape($this->__('Remove Coupon')) ?>"
+                                style="<?php if(!$this->isValidCouponCode()) echo 'display:none' ?>">
+                            <span><span><?php echo $this->__('Remove Coupon') ?></span></span></button>
+                        <div id="invalidate-info" style="color: #ff0000;float: left; <?php if(!$this->getCouponCode() || $this->isValidCouponCode()) echo 'display:none' ?>">Invalid Coupon Code</div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        //<![CDATA[
+        var formId = 'talonone-discount-coupon-form';
+        var postUrl = '<?php echo $this->getFormActionUrl() ?>';
+        var talonOneDiscountForm = new VarienForm(formId);
+        talonOneDiscountForm.submit = function (isRemove) {
+            if (isRemove) {
+                $('coupon-code').removeClassName('required-entry').setValue('');
+                $('remove-coupone').value = "1";
+            } else {
+                $('coupon-code').addClassName('required-entry');
+                $('remove-coupone').value = "0";
+            }
+            if (talonOneDiscountForm.validator.validate()) {
+
+                var container = $('payment-buttons-container');
+                container.addClassName('disabled');
+                container.setStyle({opacity:.5});
+                checkout._disableEnableAll(container, true);
+
+                new Ajax.Request(postUrl, {
+                        method:'post',
+                        asynchronous:true,
+                        evalScripts:false,
+                        onSuccess:function(response) {
+                            var couponValid = response.responseJSON['coupon_valid'];
+                            if (couponValid){
+                                Element.hide('apply-button');
+                                Element.hide('invalidate-info');
+                                Element.show('remove-button');
+                            } else {
+                                Element.hide('remove-button');
+                                Element.show('apply-button');
+                                if ($('coupon-code').getValue() != '') {
+                                    Element.show('invalidate-info');
+                                }
+                            }
+                            if (checkout) {
+                                checkout.setShippingMethod();
+                                checkout.reloadStep('shipping_method');
+                            }
+                        },
+                        onComplete:function(response) {
+                            Element.hide('coupon-code-please-wait');
+                            container.removeClassName('disabled');
+                            container.setStyle({opacity:1});
+                            checkout._disableEnableAll(container, false);
+                        },
+                        onLoading:function(transport){
+                            Element.show('coupon-code-please-wait');
+                        },
+                        parameters: $(formId).serialize(true)
+                    }
+                );
+            }
+        };
+        //]]>
+    </script>
+<?php endif; ?>

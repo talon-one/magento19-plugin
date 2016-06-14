@@ -1,9 +1,7 @@
 <?php
 
-
 class TalonOne_TalonOne_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
 {
-
     /**
      * @test
      * @return TalonOne_TalonOne_Model_Observer
@@ -16,7 +14,7 @@ class TalonOne_TalonOne_Test_Model_Observer extends EcomDev_PHPUnit_Test_Case
             $observer,
             'Observer can be instantiated'
         );
+
         return $observer;
     }
-
 }

@@ -21,5 +21,4 @@ class TalonOne_TalonOne_Test_Block_Coupon extends EcomDev_PHPUnit_Test_Case
     {
         $this->assertInstanceOf('TalonOne_TalonOne_Block_Coupon', $this->_block);
     }
-
 }

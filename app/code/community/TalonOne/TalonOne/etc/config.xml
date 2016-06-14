@@ -7,7 +7,8 @@
     </modules>
     <default>
         <settings>
-            <service_url>https://valuelogic-api.talon.one/</service_url>
+            <service_url>https://valuelogic.talon.one/v1/</service_url>
+            <tracking_url>https://stable.talon.one/talonone.js</tracking_url>
         </settings>
         <talonone>
             <settings>
@@ -20,30 +21,29 @@
             <talonone_talonone>
                 <class>TalonOne_TalonOne_Model</class>
             </talonone_talonone>
-            <talonone_talonone_mysql4>
-                <class>TalonOne_TalonOne_Model_Mysql4</class>
-                <entities>
-                    <coupon>
-                        <table>talonone_coupon</table>
-                    </coupon>
-                </entities>
-            </talonone_talonone_mysql4>
         </models>
         <blocks>
             <talonone_talonone>
                 <class>TalonOne_TalonOne_Block</class>
             </talonone_talonone>
-            <checkout>
-                <rewrite>
-                    <onepage_progress>TalonOne_TalonOne_Block_Onepage_Progress</onepage_progress>
-                </rewrite>
-            </checkout>
         </blocks>
         <helpers>
             <talonone_talonone>
                 <class>TalonOne_TalonOne_Helper</class>
             </talonone_talonone>
         </helpers>
+        <sales>
+            <quote>
+                <totals>
+                    <discount>
+                        <class>TalonOne_TalonOne_Model_Sales_Quote_Address_Total_Discount</class>
+                    </discount>
+                    <shipping>
+                        <class>TalonOne_TalonOne_Model_Sales_Quote_Address_Total_Shipping</class>
+                    </shipping>
+                </totals>
+            </quote>
+        </sales>
     </global>
     <frontend>
         <routers>
@@ -56,6 +56,14 @@
             </talonone>
         </routers>
         <events>
+            <customer_register_success>
+                <observers>
+                    <customer_register_success>
+                        <class>talonone_talonone/observer</class>
+                        <method>hookToCustomerRegisterSuccess</method>
+                    </customer_register_success>
+                </observers>
+            </customer_register_success>
             <customer_login>
                 <observers>
                     <customer_login>
@@ -64,6 +72,22 @@
                     </customer_login>
                 </observers>
             </customer_login>
+            <customer_save_after>
+                <observers>
+                    <customer_save_after>
+                        <class>talonone_talonone/observer</class>
+                        <method>hookToCustomerSaveAfter</method>
+                    </customer_save_after>
+                </observers>
+            </customer_save_after>
+            <customer_address_save_after>
+                <observers>
+                    <customer_address_save_after>
+                        <class>talonone_talonone/observer</class>
+                        <method>hookToCustomerAddressSaveAfter</method>
+                    </customer_address_save_after>
+                </observers>
+            </customer_address_save_after>
             <controller_action_postdispatch>
                 <observers>
                     <controller_action_after>
@@ -88,6 +112,14 @@
                     </update_cart_after>
                 </observers>
             </update_cart_after>
+            <save_payment_after>
+                <observers>
+                    <save_payment_after>
+                        <class>talonone_talonone/observer</class>
+                        <method>hookToSavePaymentAfter</method>
+                    </save_payment_after>
+                </observers>
+            </save_payment_after>
             <sales_quote_collect_totals_after>
                 <observers>
                     <sales_quote_collect_totals_after>
@@ -96,6 +128,30 @@
                     </sales_quote_collect_totals_after>
                 </observers>
             </sales_quote_collect_totals_after>
+            <sales_order_place_after>
+                <observers>
+                    <sales_order_place_after>
+                        <class>talonone_talonone/observer</class>
+                        <method>hookToSalesOrderPlaceAfter</method>
+                    </sales_order_place_after>
+                </observers>
+            </sales_order_place_after>
+            <sales_quote_save_before>
+                <observers>
+                    <sales_quote_save_before>
+                        <class>talonone_talonone/observer</class>
+                        <method>hookToSalesQuoteSaveBefore</method>
+                    </sales_quote_save_before>
+                </observers>
+            </sales_quote_save_before>
+            <sales_quote_remove_item>
+                <observers>
+                    <sales_quote_remove_item>
+                        <class>talonone_talonone/observer</class>
+                        <method>hookToSalesQuoteRemoveItem</method>
+                    </sales_quote_remove_item>
+                </observers>
+            </sales_quote_remove_item>
         </events>
         <layout>
             <updates>

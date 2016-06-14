@@ -7,7 +7,7 @@
         </talonone>
     </tabs>
     <sections>
-        <talonone  translate="label" module="adminhtml">
+        <talonone translate="label" module="adminhtml">
             <label>Talon.One Settings</label>
             <tab>talonone</tab>
             <sort_order>1000</sort_order>
@@ -36,6 +36,7 @@
                             <label>Shop ID</label>
                             <comment>Shop ID from Talon.One</comment>
                             <frontend_type>text</frontend_type>
+                            <validate>validate-digits validate-greater-than-zero</validate>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -45,7 +46,7 @@
                             <label>Secret Key</label>
                             <comment>Secret Key generated in Talon.One</comment>
                             <frontend_type>text</frontend_type>
-                            <validate>validate-length maximum-length-16 minimum-length-16</validate>
+                            <validate>validate-alphanum validate-length maximum-length-16 minimum-length-16</validate>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
