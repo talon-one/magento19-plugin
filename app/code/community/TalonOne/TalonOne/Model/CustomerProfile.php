@@ -15,7 +15,7 @@ class TalonOne_TalonOne_Model_CustomerProfile extends TalonOne_TalonOne_Model_Pa
     protected $_url3;
     protected $_language;
     protected $_locale;
-    protected $_signupDate;
+    protected $_signUpDate;
 
     public function getName()
     {
@@ -147,19 +147,19 @@ class TalonOne_TalonOne_Model_CustomerProfile extends TalonOne_TalonOne_Model_Pa
         $this->_locale = $locale;
     }
 
-    public function getSignupDate()
+    public function getSignUpDate()
     {
-        return $this->_signupDate;
+        return $this->_signUpDate;
     }
 
-    public function setSignupDate($signupDate)
+    public function setSignUpDate($signUpDate)
     {
-        $this->_signupDate = $signupDate;
+        $this->_signUpDate = $signUpDate;
     }
 
-    public function jsonSerialize()
+    public function toArray()
     {
-        return array_merge(parent::jsonSerialize(), array_filter(array(
+        return array_merge(parent::toArray(), array_filter(array(
             'name' => $this->getName(),
             'advocateId' => $this->getAdvocateId(),
             'gender' => $this->getGender(),
@@ -173,8 +173,13 @@ class TalonOne_TalonOne_Model_CustomerProfile extends TalonOne_TalonOne_Model_Pa
             'url3' => $this->getUrl3(),
             'language' => $this->getLanguage(),
             'locale' => $this->getLocale(),
-            'signupDate' => $this->getSignupDate(),
+            'signupDate' => $this->getSignUpDate(),
         )));
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 
     public function bindBillingAddress($billingAddress)

@@ -6,7 +6,7 @@ class TalonOne_TalonOne_Model_CustomerProfile_Factory
     {
         $talonOneCustomerProfile = Mage::getModel('talonone_talonone/customerProfile');
         $talonOneCustomerProfile->setName($customer->getName());
-        $talonOneCustomerProfile->setSignupDate(strtotime($customer->getCreatedAt()));
+        $talonOneCustomerProfile->setSignUpDate(strtotime($customer->getCreatedAt()));
         $talonOneCustomerProfile->setBirthDate($customer->getDob() ? strtotime($customer->getDob()) : null);
         $talonOneCustomerProfile->bindBillingAddress($customer->getDefaultBillingAddress());
         $talonOneCustomerProfile->bindShippingAddress($customer->getDefaultShippingAddress());
