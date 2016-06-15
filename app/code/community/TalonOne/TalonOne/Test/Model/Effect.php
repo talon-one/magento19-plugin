@@ -2,10 +2,23 @@
 
 class TalonOne_TalonOne_Test_Model_Effect extends EcomDev_PHPUnit_Test_Case
 {
-    
+
     /**
      * @test
      * @covers TalonOne_TalonOne_Model_Effect::bindArray
+     * @covers TalonOne_TalonOne_Model_Effect::bindDefaultEffect
+     * @covers TalonOne_TalonOne_Model_Effect::bindInvalideCupon
+     * @covers TalonOne_TalonOne_Model_Effect::bindAddFreeItem
+     * @covers TalonOne_TalonOne_Model_Effect::getMethod
+     * @covers TalonOne_TalonOne_Model_Effect::getDescription
+     * @covers TalonOne_TalonOne_Model_Effect::getValue
+     * @covers TalonOne_TalonOne_Model_Effect::getSku
+     * @covers TalonOne_TalonOne_Model_Effect::isFreeItem
+     * @covers TalonOne_TalonOne_Model_Effect::setMethod
+     * @covers TalonOne_TalonOne_Model_Effect::setDescription
+     * @covers TalonOne_TalonOne_Model_Effect::setValue
+     * @covers TalonOne_TalonOne_Model_Effect::setSku
+
      */
     public function testBindingArray()
     {
@@ -33,6 +46,7 @@ class TalonOne_TalonOne_Test_Model_Effect extends EcomDev_PHPUnit_Test_Case
      * @covers TalonOne_TalonOne_Model_Effect::isDiscount
      * @covers TalonOne_TalonOne_Model_Effect::isFreeShipping
      * @covers TalonOne_TalonOne_Model_Effect::isFreeItem
+     * @covers TalonOne_TalonOne_Model_Effect::isInvalidateCoupon
      */
     public function testEffectAttributes()
     {
@@ -41,6 +55,7 @@ class TalonOne_TalonOne_Test_Model_Effect extends EcomDev_PHPUnit_Test_Case
         $this->assertTrue($e->isDiscount());
         $this->assertFalse($e->isFreeShipping());
         $this->assertFalse($e->isFreeItem());
+        $this->assertFalse($e->isInvalidateCoupon());
     }
 
     /**
@@ -53,8 +68,7 @@ class TalonOne_TalonOne_Test_Model_Effect extends EcomDev_PHPUnit_Test_Case
         $e2 = Mage::getModel('talonone_talonone/effect')->bindArray(array('setDiscount', 'test_description', '10'));
         $e3 = Mage::getModel('talonone_talonone/effect')->bindArray(array('addFreeItem', 'Free Shipping', 'test_sku', '10'));
         $e4 = Mage::getModel('talonone_talonone/effect')->bindArray(array('setDiscount', 'Free Shipping', 'test_sku', '10'));
-
-
+        
         $this->assertTrue($e->equals($e2), true);
         $this->assertFalse($e->equals($e3), false);
         $this->assertFalse($e3->equals($e4), false);

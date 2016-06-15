@@ -4,6 +4,15 @@ class TalonOne_TalonOne_Test_Model_Effect_Collection extends EcomDev_PHPUnit_Tes
 {
 
     /**
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::count
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::addEffect
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::getEffects
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::isEmpty
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::getDiscounts
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::getDiscountAmount
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::getDiscountDescriptions
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::isFreeShipping
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::getFreeItems
      * @test
      */
     public function testCollectionFilters()
@@ -16,9 +25,14 @@ class TalonOne_TalonOne_Test_Model_Effect_Collection extends EcomDev_PHPUnit_Tes
         $this->assertEquals($c->getDiscountAmount(), 20);
         $this->assertTrue($c->isFreeShipping(), true);
         $this->assertNotEquals($c->getFreeItems(), null);
+        $this->assertNotEquals($c->getEffects(), null);
+        $this->assertNotEquals($c->getDiscountDescriptions(), '');
+
     }
 
     /**
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::hasDiffEffects
+     * @uses TalonOne_TalonOne_Model_Effect_Collection
      * @test
      */
     public function testCollectionDiff()
@@ -33,6 +47,24 @@ class TalonOne_TalonOne_Test_Model_Effect_Collection extends EcomDev_PHPUnit_Tes
 
         $this->assertTrue($c->hasDiffEffects($c2));
         $this->assertTrue($c2->hasDiffEffects($c));
+    }
+
+    /**
+     * @test
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::setEffects
+     * @@covers TalonOne_TalonOne_Model_Effect_Collection::hasDiffEffects
+
+     */
+    public function testSetEffects()
+    {
+        $c = $this->getEffectCollection();
+        $nc = Mage::getModel('talonone_talonone/effect_collection');
+
+        $nc->setEffects($c->getEffects());
+
+        $this->assertNotEquals($nc->count(), 0);
+        $this->assertFalse($c->hasDiffEffects($nc));
+        $this->assertFalse($nc->hasDiffEffects($c));
     }
 
     private function getEffectCollection()

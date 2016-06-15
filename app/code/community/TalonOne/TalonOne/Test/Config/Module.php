@@ -13,6 +13,7 @@ class TalonOne_TalonOne_Test_Config_Module extends EcomDev_PHPUnit_Test_Case_Con
         $this->assertHelperAlias('talonone_talonone', 'TalonOne_TalonOne_Helper_Data');
         $this->assertHelperAlias('talonone_talonone/data', 'TalonOne_TalonOne_Helper_Data');
         $this->assertHelperAlias('talonone_talonone/api', 'TalonOne_TalonOne_Helper_Api');
+        $this->assertHelperAlias('talonone_talonone/cart', 'TalonOne_TalonOne_Helper_Cart');
         $this->assertHelperAlias('talonone_talonone/customerProfile', 'TalonOne_TalonOne_Helper_CustomerProfile');
         $this->assertHelperAlias('talonone_talonone/customerSession', 'TalonOne_TalonOne_Helper_CustomerSession');
         $this->assertHelperAlias('talonone_talonone/customerEvent', 'TalonOne_TalonOne_Helper_CustomerEvent');

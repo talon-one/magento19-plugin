@@ -17,6 +17,9 @@ class TalonOne_TalonOne_Test_Block_Coupon extends EcomDev_PHPUnit_Test_Case
         $this->_block = Mage::getSingleton('core/layout')->createBlock('talonone_talonone/coupon');
     }
 
+    /**
+     * @test
+     */
     public function testCreateBlock()
     {
         $this->assertInstanceOf('TalonOne_TalonOne_Block_Coupon', $this->_block);
