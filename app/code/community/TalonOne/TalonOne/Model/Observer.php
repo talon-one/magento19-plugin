@@ -54,7 +54,7 @@ class TalonOne_TalonOne_Model_Observer
 
     public function hookToSalesQuoteRemoveItem(Varien_Event_Observer $observer)
     {
-        Mage::helper('talonone_talonone')->getEffectCollection()->removeFreeItemBySku($observer->getQuoteItem()->getSku());
+        Mage::helper('talonone_talonone')->getEffectCollection()->removeItemBySku($observer->getQuoteItem()->getSku());
     }
 
     public function hookToControllerActionPostDispatch(Varien_Event_Observer $observer)

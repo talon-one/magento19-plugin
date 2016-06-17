@@ -3,7 +3,7 @@
 class TalonOne_TalonOne_Model_Effect_Collection
 {
     protected $_effects = [];
-    protected $_removedItemsSku = [];
+    protected $_removedFreeItemsSku = [];
 
     public function count()
     {
@@ -17,7 +17,15 @@ class TalonOne_TalonOne_Model_Effect_Collection
 
     public function setEffects($effects)
     {
-        $this->_effects = $effects;
+        $this->_effects = $this->filterRemovedFreeItems($effects);
+    }
+
+    public function filterRemovedFreeItems($effects)
+    {
+        return array_filter($effects, function ($effect) {
+            return (!$effect->isFreeItem()) ||
+                ($effect->isFreeItem() && !in_array($effect->getSku(), $this->_removedFreeItemsSku));
+        });
     }
 
     public function isEmpty()
@@ -72,12 +80,12 @@ class TalonOne_TalonOne_Model_Effect_Collection
         });
     }
 
-    public function removeFreeItemBySku($sku)
+    public function removeItemBySku($sku)
     {
         foreach ($this->_effects as $key => $effect) {
             if ($effect->isFreeItem() && ($effect->getSku() == $sku)) {
-                unset($effect[$key]);
-                array_push($this->_removedItemsSku, $sku);
+                unset($this->_effects[$key]);
+                array_push($this->_removedFreeItemsSku, $sku);
             }
         }
         $this->save();
