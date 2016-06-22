@@ -93,19 +93,11 @@ class TalonOne_TalonOne_Model_Effect_Collection
 
     public function hasDiffEffects(TalonOne_TalonOne_Model_Effect_Collection $newEffectCollection)
     {
-        if (md5(serialize($newEffectCollection->getEffects())) === md5(serialize($this->_effects))) {
+        if ($newEffectCollection->getHash() === $this->getHash()) {
             return false;
         }
 
-        foreach ($this->_effects as $effect) {
-            foreach ($newEffectCollection->getEffects() as $newEffect) {
-                if (!$effect->equals($newEffect)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return ($this->uDiffEffects($this, $newEffectCollection) + $this->uDiffEffects($newEffectCollection, $this)) > 0;
     }
 
     public function updateEffects(TalonOne_TalonOne_Model_Effect_Collection $newEffectCollection)
@@ -151,6 +143,28 @@ class TalonOne_TalonOne_Model_Effect_Collection
                 }
             }
         }
+    }
+
+    public function getHash()
+    {
+        return hash('md5', serialize($this->getEffects()));
+    }
+
+    protected function uDiffEffects(
+        TalonOne_TalonOne_Model_Effect_Collection $firstEffectCollection,
+        TalonOne_TalonOne_Model_Effect_Collection $secondEffectCollection
+    ) {
+        $effects = $firstEffectCollection->getEffects();
+        return count(array_udiff($firstEffectCollection->getEffects(), $secondEffectCollection->getEffects(),
+            function ($oldEffect, $newEffect) use ($effects) {
+                if ($oldEffect->equals($newEffect)) {
+                    return 0;
+                }
+                return count(array_filter($effects, function ($effect) use ($newEffect) {
+                    return $effect->equals($newEffect);
+                })) == 0 ? 1 : -1;
+            }));
+
     }
 
     protected function save()

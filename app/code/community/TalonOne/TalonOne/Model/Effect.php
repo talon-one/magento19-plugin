@@ -22,7 +22,8 @@ class TalonOne_TalonOne_Model_Effect
         return ($this->getMethod() === 'addFreeItem');
     }
 
-    public function isInvalidateCoupon() {
+    public function isInvalidateCoupon()
+    {
         return ($this->getMethod() === 'invalidateCoupon');
     }
 
@@ -68,7 +69,7 @@ class TalonOne_TalonOne_Model_Effect
 
     public function bindArray($array)
     {
-        switch($array[0]) {
+        switch ($array[0]) {
             case 'addFreeItem':
                 $this->bindAddFreeItem($array);
                 break;
@@ -84,15 +85,19 @@ class TalonOne_TalonOne_Model_Effect
 
     public function equals(TalonOne_TalonOne_Model_Effect $effect)
     {
-        if (($this->getMethod() === $effect->getMethod()) && ($this->getDescription() === $effect->getDescription())) {
-            if ($this->isFreeShipping() || ($this->isDiscount() && ($this->getValue() == $effect->getValue())) || ($this->isFreeItem() && ($this->getSku() == $effect->getSku()))) {
-                return true;
-            }
+        if ($this->isFreeShipping() || $this->getHash() === $effect->getHash()) {
+            return true;
         }
         return false;
     }
 
-    public function removeFreeItemFromCart($quote) {
+    public function getHash()
+    {
+        return hash('md5', serialize($this));
+    }
+
+    public function removeFreeItemFromCart($quote)
+    {
         $item = Mage::helper('talonone_talonone/cart')->getFreeItemFromCartBySku($quote, $this->getSku());
         if ($item) {
             Mage::getSingleton('checkout/cart')->removeItem($item->getItemId())->save();

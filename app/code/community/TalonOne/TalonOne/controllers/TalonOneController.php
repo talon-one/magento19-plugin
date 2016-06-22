@@ -65,21 +65,18 @@ class TalonOne_TalonOne_TalonOneController extends Mage_Core_Controller_Front_Ac
         }
 
         $helper = Mage::helper('talonone_talonone');
-        $session = Mage::getSingleton('checkout/session');
         $newCouponCode = htmlspecialchars($this->getRequest()->getParam('coupon_code'));
         $remove = htmlspecialchars($this->getRequest()->getParam('remove'));
         $ajax = htmlspecialchars($this->getRequest()->getParam('ajax'));
+
         if ($remove == 1 || empty($newCouponCode)) {
             $helper->getEffectCollection()->rollBackEffects();
-        } else {
-            if (!empty($newCouponCode)) {
-                $coupon_code = $session->getTalonOneCouponCode();
-                if (!empty($coupon_code)) {
-                    $helper->getEffectCollection()->rollBackEffects();
-                }
-                $session->setTalonOneCouponCode($newCouponCode);
-            }
         }
+
+        if (!empty($newCouponCode)) {
+            $helper->setCuponCode($newCouponCode);
+        }
+
         Mage::helper('talonone_talonone/customerSession')->updateCustomerSession();
         if (!(($remove == 1) || $helper->isValidCouponCode())) {
             $helper->getEffectCollection()->rollBackEffects();

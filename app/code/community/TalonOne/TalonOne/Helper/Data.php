@@ -16,6 +16,14 @@ class TalonOne_TalonOne_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getSingleton('checkout/session')->getTalonOneCouponCode();
     }
 
+    public function setCuponCode($cuponCode)
+    {
+        if (!empty($this->getCouponCode())) {
+            $this->getEffectCollection()->rollBackEffects();
+        }
+        Mage::getSingleton('checkout/session')->setTalonOneCouponCode($cuponCode);
+    }
+
     public function setLastError($error)
     {
         Mage::getSingleton('checkout/session')->setTalonOneLastError($error);
