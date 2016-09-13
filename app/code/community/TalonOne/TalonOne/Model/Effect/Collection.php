@@ -22,7 +22,7 @@ class TalonOne_TalonOne_Model_Effect_Collection
 
     public function filterRemovedFreeItems($effects)
     {
-        return array_filter($effects, function ($effect) {
+        return array_filter($effects, function (TalonOne_TalonOne_Model_Effect $effect) {
             return (!$effect->isFreeItem()) ||
                 ($effect->isFreeItem() && !in_array($effect->getSku(), $this->_removedFreeItemsSku));
         });
@@ -41,13 +41,15 @@ class TalonOne_TalonOne_Model_Effect_Collection
     public function bindEffectsFromArray($effects)
     {
         foreach ($effects as $effect) {
-            $this->addEffect(Mage::getModel('talonone_talonone/effect')->bindArray($effect));
+            if(isset($effect[3])) {
+                $this->addEffect(Mage::getModel('talonone_talonone/effect')->bindArray($effect[3]));
+            }
         }
     }
 
     public function getDiscounts()
     {
-        return array_filter($this->_effects, function ($effect) {
+        return array_filter($this->_effects, function (TalonOne_TalonOne_Model_Effect $effect) {
             return $effect->isDiscount();
         });
     }
@@ -68,16 +70,23 @@ class TalonOne_TalonOne_Model_Effect_Collection
 
     public function isFreeShipping()
     {
-        return count(array_filter($this->_effects, function ($effect) {
+        return count(array_filter($this->_effects, function (TalonOne_TalonOne_Model_Effect $effect) {
             return $effect->isFreeShipping();
         })) > 0;
     }
 
     public function getFreeItems()
     {
-        return array_filter($this->_effects, function ($effect) {
+        return array_filter($this->_effects, function (TalonOne_TalonOne_Model_Effect $effect) {
             return $effect->isFreeItem();
         });
+    }
+
+    public function hasRejectCoupon()
+    {
+        return count(array_filter($this->_effects, function (TalonOne_TalonOne_Model_Effect $effect) {
+            return $effect->isRejectCoupon();
+        })) > 0;
     }
 
     public function removeItemBySku($sku)
@@ -103,6 +112,11 @@ class TalonOne_TalonOne_Model_Effect_Collection
     public function updateEffects(TalonOne_TalonOne_Model_Effect_Collection $newEffectCollection)
     {
         if ($newEffectCollection->isEmpty()) {
+            $this->rollBackEffects();
+            return;
+        }
+
+        if($newEffectCollection->hasRejectCoupon()) {
             $this->rollBackEffects();
             return;
         }
@@ -160,7 +174,7 @@ class TalonOne_TalonOne_Model_Effect_Collection
                 if ($oldEffect->equals($newEffect)) {
                     return 0;
                 }
-                return count(array_filter($effects, function ($effect) use ($newEffect) {
+                return count(array_filter($effects, function (TalonOne_TalonOne_Model_Effect $effect) use ($newEffect) {
                     return $effect->equals($newEffect);
                 })) == 0 ? 1 : -1;
             }));

@@ -34,7 +34,7 @@ class TalonOne_TalonOne_Helper_Api extends Mage_Core_Helper_Abstract
 
     protected function call($method, $url, $data = array())
     {
-        $shopId = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOP_ID);
+        $shopId = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_APPLICATION_ID);
         $secretKey = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SECRET_KEY);
         $serviceUrl = Mage::getStoreConfig('settings/service_url');
         $url = $serviceUrl . $url;

@@ -32,16 +32,16 @@
                             <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </talonone_show_coupon_input>
-                        <talonone_shop_id translate="label comment">
-                            <label>Shop ID</label>
-                            <comment>Shop ID from Talon.One</comment>
+                        <talonone_application_id translate="label comment">
+                            <label>Application ID</label>
+                            <comment>Application ID from Talon.One</comment>
                             <frontend_type>text</frontend_type>
                             <validate>validate-digits validate-greater-than-zero</validate>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </talonone_shop_id>
+                        </talonone_application_id>
                         <talonone_secret_key translate="label comment">
                             <label>Secret Key</label>
                             <comment>Secret Key generated in Talon.One</comment>

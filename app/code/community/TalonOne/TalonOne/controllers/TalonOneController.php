@@ -35,7 +35,7 @@ class TalonOne_TalonOne_TalonOneController extends Mage_Core_Controller_Front_Ac
         $magentoVersion = Mage::getVersion();
         $pluginVersion = Mage::getConfig()->getModuleConfig('TalonOne_TalonOne')->version->asArray();
         $inputShowed = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOW_COUPON_INPUT);
-        $shopId = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SHOP_ID);
+        $shopId = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_APPLICATION_ID);
         $secretKey = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SECRET_KEY);
         $response = Mage::helper('talonone_talonone/api')->post('events', array(
             'type' => 'check_plugin',

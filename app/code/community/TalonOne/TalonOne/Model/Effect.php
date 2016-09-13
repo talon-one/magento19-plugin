@@ -27,6 +27,11 @@ class TalonOne_TalonOne_Model_Effect
         return ($this->getMethod() === 'invalidateCoupon');
     }
 
+    public function isRejectCoupon()
+    {
+        return ($this->getMethod() === 'rejectCoupon');
+    }
+
     public function getMethod()
     {
         return $this->_method;
@@ -73,6 +78,7 @@ class TalonOne_TalonOne_Model_Effect
             case 'addFreeItem':
                 $this->bindAddFreeItem($array);
                 break;
+            case 'rejectCoupon':
             case 'invalidateCoupon':
                 $this->bindInvalideCupon($array);
                 break;
