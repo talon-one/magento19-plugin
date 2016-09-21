@@ -1,0 +1,14 @@
+clone:
+  recursive: true
+
+publish:
+  docker:
+    registry: $$DOCKER_REGISTRY
+    email: drone@talon.one
+    username: $$DOCKER_USER
+    password: $$DOCKER_PASS
+    storage_driver: overlay        
+    repo: magento19-plugin/$${BRANCH}
+    tag: 
+      - $${COMMIT}
+      - latest
