@@ -53,7 +53,7 @@ class TalonOne_TalonOne_Model_Event implements \JsonSerializable
             'profileId' => $this->getProfileId(),
             'sessionId' => $this->getSessionId(),
             'type' => $this->getType(),
-            'value' => $this->getValue(),
+            'attributes' => $this->getValue(),
         ];
     }
 

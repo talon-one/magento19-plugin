@@ -28,7 +28,7 @@ class TalonOne_TalonOne_Test_Model_Event extends EcomDev_PHPUnit_Test_Case
             'profileId' => $e->getProfileId(),
             'sessionId' => $e->getSessionId(),
             'type' => $e->getType(),
-            'value' => $e->getValue()
+            'attributes' => $e->getValue()
         );
 
         $this->assertEquals($e->getValue(), 'test_value');

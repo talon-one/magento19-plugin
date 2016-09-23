@@ -39,10 +39,10 @@ class TalonOne_TalonOne_TalonOneController extends Mage_Core_Controller_Front_Ac
         $secretKey = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SECRET_KEY);
         $response = Mage::helper('talonone_talonone/api')->post('events', array(
             'type' => 'check_plugin',
-            'value' => array(
+            'attributes' => array(
                 'pluginVersion' => $pluginVersion,
                 'magentoVersion' => $magentoVersion,
-                'inputShowed' => $inputShowed
+                'inputShowed' => (bool)$inputShowed
             ),
             'sessionId' => '0'
         ));
