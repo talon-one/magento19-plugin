@@ -11,8 +11,6 @@ class TalonOne_TalonOne_Model_CustomerSession_Factory
         $talonOneCustomerSession->setCoupon((string)$checkoutSession->getTalonOneCouponCode());
         $talonOneCustomerSession->setState('open');
         $talonOneCustomerSession->setCartItems(Mage::getModel('talonone_talonone/cartItem_collection_factory')->bind($quote));
-        $talonOneCustomerSession->setTimezone(Mage::app()->getStore()->getConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE));
-        $talonOneCustomerSession->setCurrency(Mage::app()->getStore()->getCurrentCurrencyCode());
         $talonOneCustomerSession->setTotal((float)round($totals["grand_total"]->getValue()));
         $talonOneCustomerSession->setProfileId(Mage::helper('talonone_talonone/customerSession')->getCustomerId());
         $talonOneCustomerSession->bindBillingAddress($quote->getBillingAddress());

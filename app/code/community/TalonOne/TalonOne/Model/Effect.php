@@ -78,6 +78,9 @@ class TalonOne_TalonOne_Model_Effect
             case 'addFreeItem':
                 $this->bindAddFreeItem($array);
                 break;
+            case 'acceptCoupon':
+                $this->bindAcceptCoupon($array);
+                break;
             case 'rejectCoupon':
             case 'invalidateCoupon':
                 $this->bindInvalideCupon($array);
@@ -116,6 +119,13 @@ class TalonOne_TalonOne_Model_Effect
         list($method, $description, $value) = $array;
         $this->setMethod($method);
         $this->setDescription($description);
+        $this->setValue($value);
+    }
+
+    private function bindAcceptCoupon($array)
+    {
+        list($method, $value) = $array;
+        $this->setMethod($method);
         $this->setValue($value);
     }
 

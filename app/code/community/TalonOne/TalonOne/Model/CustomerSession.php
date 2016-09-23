@@ -6,10 +6,8 @@ class TalonOne_TalonOne_Model_CustomerSession extends TalonOne_TalonOne_Model_Pa
     protected $_coupon;
     protected $_state;
     protected $_cartItems;
-    protected $_timezone;
     protected $_shippingCost;
     protected $_shippingMethod;
-    protected $_currency;
     protected $_total;
 
     public function getProfileId()
@@ -52,16 +50,6 @@ class TalonOne_TalonOne_Model_CustomerSession extends TalonOne_TalonOne_Model_Pa
         $this->_cartItems = $cartItems;
     }
 
-    public function getTimezone()
-    {
-        return $this->_timezone;
-    }
-
-    public function setTimezone($timezone)
-    {
-        $this->_timezone = $timezone;
-    }
-
     public function getShippingCost()
     {
         return $this->_shippingCost;
@@ -82,16 +70,6 @@ class TalonOne_TalonOne_Model_CustomerSession extends TalonOne_TalonOne_Model_Pa
         $this->_shippingMethod = $shippingMethod;
     }
 
-    public function getCurrency()
-    {
-        return $this->_currency;
-    }
-
-    public function setCurrency($currency)
-    {
-        $this->_currency = $currency;
-    }
-
     public function getTotal()
     {
         return $this->_total;
@@ -109,10 +87,8 @@ class TalonOne_TalonOne_Model_CustomerSession extends TalonOne_TalonOne_Model_Pa
             'coupon' => $this->getCoupon(),
             'state' => $this->getState(),
             'cartItems' => $this->getCartItems(),
-            'timezone' => $this->getTimezone(),
             'shippingCost' => $this->getShippingCost(),
             'shippingMethod' => $this->getShippingMethod(),
-            'currency' => $this->getCurrency(),
             'total' => $this->getTotal(),
         ]);
     }

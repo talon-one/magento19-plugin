@@ -8,11 +8,11 @@ class TalonOne_TalonOne_Helper_CustomerEvent extends Mage_Core_Helper_Abstract
         Mage::helper('talonone_talonone/api')->checkResponse($response['body']);
     }
 
-    public function postEvent($type, $values)
+    public function postEvent($type, $attributes)
     {
         $talonOneEvent = Mage::getModel('talonone_talonone/event');
         $talonOneEvent->setType($type);
-        $talonOneEvent->setValue($values);
+        $talonOneEvent->setAttributes($attributes);
         $talonOneEvent->setProfileId(Mage::helper('talonone_talonone/customerSession')->getCustomerId());
         $talonOneEvent->setSessionId(Mage::helper('talonone_talonone/customerSession')->getCustomerSessionId());
         $this->update($talonOneEvent);

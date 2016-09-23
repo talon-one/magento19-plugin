@@ -5,7 +5,7 @@ class TalonOne_TalonOne_Model_Event implements \JsonSerializable
     protected $_profileId;
     protected $_sessionId;
     protected $_type;
-    protected $_value;
+    protected $_attributes;
 
     public function getProfileId()
     {
@@ -37,14 +37,14 @@ class TalonOne_TalonOne_Model_Event implements \JsonSerializable
         $this->_type = $type;
     }
 
-    public function getValue()
+    public function getAttributes()
     {
-        return $this->_value;
+        return $this->_attributes;
     }
 
-    public function setValue($value)
+    public function setAttributes($attributes)
     {
-        $this->_value = $value;
+        $this->_attributes = $attributes;
     }
 
     public function toArray()
@@ -53,7 +53,7 @@ class TalonOne_TalonOne_Model_Event implements \JsonSerializable
             'profileId' => $this->getProfileId(),
             'sessionId' => $this->getSessionId(),
             'type' => $this->getType(),
-            'attributes' => $this->getValue(),
+            'attributes' => $this->getAttributes(),
         ];
     }
 
