@@ -72,7 +72,7 @@ class TalonOne_TalonOne_Model_Observer
                 Mage::dispatchEvent('save_payment_after', array('request' => $request));
                 break;
         }
-        Mage::helper('talonone_talonone/customerEvent')->postEvent($fullActionName, array('url' => $request->getRequestUri()));
+        Mage::helper('talonone_talonone/customerEvent')->postEvent('action', array('name'=> $fullActionName,'url' => $request->getRequestUri()));
     }
 
     protected function createOrUpdateCustomerProfile()
