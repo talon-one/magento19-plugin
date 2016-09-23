@@ -7,7 +7,7 @@
     </modules>
     <default>
         <settings>
-            <service_url>https://valuelogic.talon.one/v1/</service_url>
+            <service_url>https://stable.talon.one/v1/</service_url>
             <tracking_url>https://stable.talon.one/talonone.js</tracking_url>
         </settings>
         <talonone>
