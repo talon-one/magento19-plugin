@@ -73,7 +73,7 @@ class TalonOne_TalonOne_TalonOneController extends Mage_Core_Controller_Front_Ac
             $helper->getEffectCollection()->rollBackEffects();
         }
 
-        if (!empty($newCouponCode)) {
+        if (!empty($newCouponCode) && $remove != 1) {
             $helper->setCuponCode($newCouponCode);
         }
 
