@@ -16,7 +16,6 @@ class TalonOne_TalonOne_Model_Sales_Quote_Address_Total_Discount extends Mage_Sa
             return $this;
         }
 
-        Mage::helper('talonone_talonone/customerSession')->updateCustomerSession();
         $effectsCollection = Mage::helper('talonone_talonone')->getEffectCollection();
         $discountAmount = $effectsCollection->getDiscountAmount();
         $quote = $address->getQuote();
