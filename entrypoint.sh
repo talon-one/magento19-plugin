@@ -3,25 +3,11 @@
 set -e
 set -o pipefail
 
-echo "sleeping"
-sleep 5
+if [ -f /persistent/local.xml ]; then
+  cp /persistent/local.xml /var/www/htdocs/app/etc/local.xml
+fi
 
-echo "create db"
-mysql "-p$MYSQL_ROOT_PASSWORD" -h $MYSQL_HOST -t<<EOF
-CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
-GRANT ALL ON $MYSQL_DATABASE.* TO '$MYSQL_USER' IDENTIFIED BY '$MYSQL_PASSWORD';
-EOF
-
-# figure out if the database is initialized, both --silent flags are required to
-table_count=$(
-  mysql --skip-column-names \
-    -u "$MYSQL_USER" "-p$MYSQL_PASSWORD" -h $MYSQL_HOST -D $MYSQL_DATABASE \
-    -e "SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema = 'magento'"
-)
-
-if [ "$table_count" == "0" ]; then
-  echo "install magento"
-  php -f /var/www/htdocs/install.php -- \
+php -f /var/www/htdocs/install.php -- \
   --license_agreement_accepted "yes" \
   --db_host $MYSQL_HOST \
   --db_name $MYSQL_DATABASE \
@@ -41,6 +27,9 @@ if [ "$table_count" == "0" ]; then
   --secure_base_url "" \
   --skip_url_validation "yes" \
   --use_rewrites "no"
+
+if [ ! -f /persistent/local.xml ]; then
+  cp /var/www/htdocs/app/etc/local.xml /persistent/local.xml
 fi
 
 exec apache2-foreground
