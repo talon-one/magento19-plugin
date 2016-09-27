@@ -26,7 +26,8 @@ php -f /var/www/htdocs/install.php -- \
   --use_secure "no" \
   --secure_base_url "" \
   --skip_url_validation "yes" \
-  --use_rewrites "no"
+  --use_rewrites "no" \
+  || true # Allow this install script to fail.
 
 if [ ! -f /persistent/local.xml ]; then
   cp /var/www/htdocs/app/etc/local.xml /persistent/local.xml
