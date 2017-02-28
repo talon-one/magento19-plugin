@@ -3,6 +3,13 @@
 set -e
 set -o pipefail
 
+# Fixup htaccess file to work correctly behind SSL termination proxy.
+cat <<EOF >> /var/www/htdocs/.htaccess
+
+# Detect the X-Forwarded-Proto header and set the \$_SERVER['HTTPS'] env var Magento expects
+SetEnvIf X-Forwarded-Proto https HTTPS=on
+EOF
+
 if [ -f /persistent/local.xml ]; then
   cp /persistent/local.xml /var/www/htdocs/app/etc/local.xml
 fi
