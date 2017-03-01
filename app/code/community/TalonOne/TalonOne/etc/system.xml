@@ -15,7 +15,7 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <settings translate="label">
+                <talonone_general_settings translate="label">
                     <label>General</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
@@ -32,6 +32,25 @@
                             <show_in_store>1</show_in_store>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                         </talonone_show_coupon_input>
+                    </fields>
+                </talonone_general_settings>
+                <talonone_api_settings translate="label">
+                    <label>API settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <talonone_base_url translate="label comment">
+                            <label>Talon.One URL</label>
+                            <comment>Base URL for the Talon.One API</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </talonone_base_url>
                         <talonone_application_id translate="label comment">
                             <label>Application ID</label>
                             <comment>Application ID from Talon.One</comment>
@@ -53,9 +72,8 @@
                             <show_in_store>1</show_in_store>
                         </talonone_secret_key>
                     </fields>
-                </settings>
+                </talonone_api_settings>
             </groups>
         </talonone>
-
     </sections>
 </config>

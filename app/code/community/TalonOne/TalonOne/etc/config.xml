@@ -6,14 +6,13 @@
         </TalonOne_TalonOne>
     </modules>
     <default>
-        <settings>
-            <service_url>https://stable.talon.one/v1/</service_url>
-            <tracking_url>https://stable.talon.one/talonone.js</tracking_url>
-        </settings>
         <talonone>
-            <settings>
+            <talonone_general_settings>
                 <talonone_show_coupon_input>1</talonone_show_coupon_input>
-            </settings>
+            </talonone_general_settings>
+            <talonone_api_settings>
+                <talonone_base_url>https://mycompany.talon.one/</talonone_base_url>
+            </talonone_api_settings>
         </talonone>
     </default>
     <global>

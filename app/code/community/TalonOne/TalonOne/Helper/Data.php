@@ -2,9 +2,10 @@
 
 class TalonOne_TalonOne_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    const XML_PATH_SHOW_COUPON_INPUT = 'talonone/settings/talonone_show_coupon_input';
-    const XML_PATH_APPLICATION_ID = 'talonone/settings/talonone_application_id';
-    const XML_PATH_SECRET_KEY = 'talonone/settings/talonone_secret_key';
+    const XML_PATH_SHOW_COUPON_INPUT = 'talonone/talonone_general_settings/talonone_show_coupon_input';
+    const XML_PATH_BASE_URL = 'talonone/talonone_api_settings/talonone_base_url';
+    const XML_PATH_APPLICATION_ID = 'talonone/talonone_api_settings/talonone_application_id';
+    const XML_PATH_SECRET_KEY = 'talonone/talonone_api_settings/talonone_secret_key';
 
     public function isValidCouponCode()
     {
