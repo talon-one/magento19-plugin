@@ -1,0 +1,4 @@
+app/code/community/TalonOne/TalonOne/ app/code/community/TalonOne/TalonOne/
+app/design/frontend/base/default/layout/talonone.xml app/design/frontend/base/default/layout/talonone.xml
+app/design/frontend/base/default/template/talonone/ app/design/frontend/base/default/template/talonone/
+app/etc/modules/TalonOne_TalonOne.xml app/etc/modules/TalonOne_TalonOne.xml
