@@ -37,7 +37,7 @@ class TalonOne_TalonOne_Helper_Api extends Mage_Core_Helper_Abstract
         $serviceUrl = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_BASE_URL);
         $shopId = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_APPLICATION_ID);
         $secretKey = Mage::getStoreConfig(TalonOne_TalonOne_Helper_Data::XML_PATH_SECRET_KEY);
-        $url = $serviceUrl . "/v1/" . $url;
+        $url = rtrim($serviceUrl, '/') . '/v1/' . $url;
         $dataJson = json_encode($data);
         $signature = hash_hmac('md5', $dataJson, hex2bin($secretKey));
         $headers = 'Content-Signature: signer=' . $shopId . '; signature=' . $signature;
