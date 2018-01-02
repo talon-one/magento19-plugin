@@ -55,7 +55,7 @@
                             <label>Application ID</label>
                             <comment>Application ID from Talon.One</comment>
                             <frontend_type>text</frontend_type>
-                            <validate>validate-digits validate-greater-than-zero</validate>
+                            <validate>validate-alphanum validate-length maximum-length-16 minimum-length-16</validate>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
