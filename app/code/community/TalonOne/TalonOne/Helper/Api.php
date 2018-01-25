@@ -25,7 +25,8 @@ class TalonOne_TalonOne_Helper_Api extends Mage_Core_Helper_Abstract
 
     public function checkResponse($response)
     {
-        if (array_key_exists('event', $response) && array_key_exists('effects', $response['event'])) {
+        if (is_array($response) && array_key_exists('event', $response) && is_array($response['event'])
+            && array_key_exists('effects', $response['event'])) {
             $newEffectCollection = Mage::getModel('talonone_talonone/effect_collection');
             $newEffectCollection->bindEffectsFromArray($response['event']['effects']);
             Mage::helper('talonone_talonone')->getEffectCollection()->updateEffects($newEffectCollection);
